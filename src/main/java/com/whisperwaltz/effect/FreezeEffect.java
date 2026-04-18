@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.phys.Vec3;
 
 public class FreezeEffect extends MobEffect {
 
@@ -30,8 +31,10 @@ public class FreezeEffect extends MobEffect {
         if (entity.getTicksFrozen() < required) {
             entity.setTicksFrozen(required + 5);
         }
-        // Cancel any remaining horizontal momentum (knockback, etc.)
-        entity.setDeltaMovement(0, entity.getDeltaMovement().y, 0);
+        // Dampen horizontal momentum to 25% each tick — allows a little knockback to show
+        // but still stops walking/pathfinding momentum quickly
+        Vec3 motion = entity.getDeltaMovement();
+        entity.setDeltaMovement(motion.x * 0.25, motion.y, motion.z * 0.25);
         // Stop AI pathfinding every tick
         if (entity instanceof Mob mob) {
             mob.getNavigation().stop();

@@ -57,7 +57,8 @@ public class FreezeBoxRenderer {
         int r = 200, g = 235, b = 255, a = 160;
 
         poseStack.pushPose();
-        VertexConsumer buf = buffers.getBuffer(RenderType.entityTranslucentCull(ICE_TEXTURE));
+        // entityTranslucent (no culling) — faces are visible regardless of winding order
+        VertexConsumer buf = buffers.getBuffer(RenderType.entityTranslucent(ICE_TEXTURE));
         PoseStack.Pose pose = poseStack.last();
 
         // North  (-Z)
