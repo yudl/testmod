@@ -14,6 +14,7 @@ public class WhisperwaltzMod {
 
     public WhisperwaltzMod(IEventBus modEventBus, ModContainer modContainer) {
         ModItems.ITEMS.register(modEventBus);
+        ModEffects.MOB_EFFECTS.register(modEventBus);
         LOGGER.info("Whisperwaltz mod loaded.");
     }
 }
