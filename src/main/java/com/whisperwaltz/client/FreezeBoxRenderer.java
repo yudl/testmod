@@ -2,7 +2,7 @@ package com.whisperwaltz.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.whisperwaltz.ModEffects;
+import com.whisperwaltz.effect.FreezeEffect;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -32,7 +32,11 @@ public class FreezeBoxRenderer {
     @SubscribeEvent
     public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity entity = event.getEntity();
-        if (!entity.hasEffect(ModEffects.FREEZE)) return;
+        // DeferredHolder uses identity equals, which breaks after network sync on the client.
+        // Checking by class type is reliable on both sides.
+        boolean frozen = entity.getActiveEffects().stream()
+                .anyMatch(i -> i.getEffect().value() instanceof FreezeEffect);
+        if (!frozen) return;
 
         renderFreezeBox(entity, event.getPoseStack(), event.getMultiBufferSource());
     }
