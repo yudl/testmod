@@ -11,17 +11,21 @@ public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, WhisperwaltzMod.MOD_ID);
 
-    // Tab title: subtle purple → cornflower blue static gradient
+    // Static linear gradient for the tab tooltip (shown when hovering the tab button)
     private static final int[] TITLE_FROM = {160, 32, 240};
-    private static final int[] TITLE_TO   = {64,  160, 255};
+    private static final int[] TITLE_TO   = {64, 160, 255};
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WHISPERWALTZ_TAB =
             CREATIVE_MODE_TABS.register("whisperwaltz_tab", () ->
                     CreativeModeTab.builder()
                             .title(GradientName.buildLinear("Custom Mod", TITLE_FROM, TITLE_TO))
+                            // hideTitle() so the vanilla static title is not drawn;
+                            // CreativeTabTitleRenderer draws the animated version instead.
+                            .hideTitle()
                             .icon(() -> ModItems.WHISPERWALTZ_SWORD.get().getDefaultInstance())
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.WHISPERWALTZ_SWORD.get());
+                                output.accept(ModItems.LEAF_WEAVER.get());
                             })
                             .build()
             );

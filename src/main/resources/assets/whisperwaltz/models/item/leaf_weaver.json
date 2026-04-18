@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "whisperwaltz:item/leaf_weaver"
+    }
+}
